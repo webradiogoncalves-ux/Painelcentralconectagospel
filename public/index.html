@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10162F">
+  <title>Painel Central | Conecta Gospel</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><span class="brand-mark">CG</span><div><strong>CONECTA</strong><small>GOSPEL RÁDIO</small></div></div>
+    <div class="side-label">CENTRAL DE CONTROLE</div>
+    <button class="nav active" data-page="overview">▦ <span>Visão geral</span></button>
+    <button class="nav" data-page="radios">◉ <span>Minhas rádios</span></button>
+    <button class="nav" data-page="playlists">♫ <span>Playlists</span></button>
+    <button class="nav" data-page="schedule">▤ <span>Programação</span></button>
+    <button class="nav" data-page="identity">✦ <span>Vinhetas e chamadas</span></button>
+    <button class="nav" data-page="settings">⚙ <span>Configurações</span></button>
+    <div class="sidebar-bottom"><span class="dot"></span> Painel em preparação</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu" id="menuBtn" aria-label="Abrir menu">☰</button>
+      <div><span class="eyebrow">PAINEL ADMINISTRATIVO</span><h1 id="pageTitle">Visão geral</h1></div>
+      <div class="top-right"><span class="status-pill"><i></i> Ambiente de configuração</span><div class="avatar">CG</div></div>
+    </header>
+
+    <section class="page active" id="overview">
+      <div class="welcome">
+        <div><span class="eyebrow aqua">BEM-VINDO À CENTRAL</span><h2>Suas rádios.<br><em>Um só painel.</em></h2><p>Gerencie cada emissora de forma independente, mantendo suas músicas, horários e identidade.</p></div>
+        <div class="welcome-art"><div class="signal">)))</div><div class="disc"></div></div>
+      </div>
+      <div class="section-heading"><div><h3>Rádios cadastradas</h3><p>As duas emissoras que vamos integrar primeiro.</p></div><button class="outline-btn" data-go="radios">Gerenciar rádios <b>→</b></button></div>
+      <div class="radio-grid">
+        <article class="radio-card">
+          <div class="card-top"><div class="radio-icon">VC</div><span class="tag pending">Integração pendente</span></div>
+          <h3>Web Rádio Vem Comigo Deus</h3><p>Site e player existentes</p>
+          <div class="card-meta"><span>Playlist independente</span><span>● Aguardando conexão</span></div>
+          <button class="card-btn" data-radio="vem">Configurar rádio <b>→</b></button>
+        </article>
+        <article class="radio-card">
+          <div class="card-top"><div class="radio-icon turquoise">PG</div><span class="tag pending">Integração pendente</span></div>
+          <h3>Radio Pop Gospel</h3><p>Site e player existentes</p>
+          <div class="card-meta"><span>Playlist independente</span><span>● Aguardando conexão</span></div>
+          <button class="card-btn" data-radio="pop">Configurar rádio <b>→</b></button>
+        </article>
+      </div>
+      <div class="notice"><span>i</span><div><strong>Integração segura</strong><p>Este é o primeiro esqueleto visual do painel. Nenhuma transmissão ou site existente será alterado nesta etapa.</p></div></div>
+    </section>
+
+    <section class="page" id="radios">
+      <div class="section-heading"><div><h3>Minhas rádios</h3><p>Configure cada emissora separadamente.</p></div></div>
+      <div class="radio-grid">
+        <article class="radio-card"><div class="card-top"><div class="radio-icon">VC</div><span class="tag pending">Não conectada</span></div><h3>Web Rádio Vem Comigo Deus</h3><p>Endereço do site e transmissão serão cadastrados na próxima etapa.</p><button class="card-btn" data-radio="vem">Editar configuração →</button></article>
+        <article class="radio-card"><div class="card-top"><div class="radio-icon turquoise">PG</div><span class="tag pending">Não conectada</span></div><h3>Radio Pop Gospel</h3><p>Endereço do site e transmissão serão cadastrados na próxima etapa.</p><button class="card-btn" data-radio="pop">Editar configuração →</button></article>
+      </div>
+    </section>
+
+    <section class="page" id="playlists">
+      <div class="section-heading"><div><h3>Playlists independentes</h3><p>O conteúdo de uma rádio não se mistura com o da outra.</p></div></div>
+      <div class="selector-row"><label for="radioSelect">Escolha a rádio</label><select id="radioSelect"><option value="vem">Vem Comigo Deus</option><option value="pop">Radio Pop Gospel</option></select></div>
+      <div class="playlist-panel"><div class="playlist-head"><div><span class="eyebrow aqua">BIBLIOTECA MUSICAL</span><h3 id="playlistTitle">Playlist — Vem Comigo Deus</h3></div><label class="upload-btn" for="songFiles">＋ Adicionar músicas</label><input id="songFiles" type="file" accept="audio/*" multiple hidden></div><div id="songList" class="song-list"><div class="empty">Nenhuma música adicionada nesta demonstração.<br>Use “Adicionar músicas” para montar uma lista de teste neste navegador.</div></div><p class="small-note">A lista desta versão é apenas uma prévia local do navegador. O armazenamento permanente e a reprodução automática serão ligados ao servidor na etapa de integração.</p></div>
+    </section>
+
+    <section class="page" id="schedule">
+      <div class="section-heading"><div><h3>Programação</h3><p>Os horários de cada rádio serão configurados individualmente.</p></div></div>
+      <div class="placeholder"><div class="placeholder-icon">▤</div><h3>Agenda de programação</h3><p>Vamos conectar os programas, horários e regras de prioridade depois de confirmar os endereços e os recursos dos servidores atuais.</p></div>
+    </section>
+
+    <section class="page" id="identity">
+      <div class="section-heading"><div><h3>Vinhetas e chamadas</h3><p>Identidade sonora exclusiva para cada rádio.</p></div></div>
+      <div class="placeholder"><div class="placeholder-icon">✦</div><h3>Biblioteca de áudio</h3><p>Vamos organizar vinhetas, chamadas, versículos e hora certa em bibliotecas separadas por emissora.</p></div>
+    </section>
+
+    <section class="page" id="settings">
+      <div class="section-heading"><div><h3>Configurações</h3><p>Preferências gerais da central.</p></div></div>
+      <div class="placeholder"><div class="placeholder-icon">⚙</div><h3>Conexões e segurança</h3><p>Login, permissões e endereços dos serviços serão configurados antes de publicar o painel.</p></div>
+    </section>
+  </main>
+
+  <dialog id="configDialog">
+    <form method="dialog" class="dialog-content">
+      <button class="close" aria-label="Fechar">×</button>
+      <span class="eyebrow aqua">CADASTRO DA EMISSORA</span><h2 id="dialogTitle">Configurar rádio</h2>
+      <p>Na próxima etapa vamos inserir os endereços corretos do site e do player já existentes.</p>
+      <label>Endereço do site<input id="siteUrl" type="url" placeholder="https://seusite.com"></label>
+      <label>Endereço do player / transmissão<input id="streamUrl" type="url" placeholder="https://servidor.com/stream"></label>
+      <p class="small-note">Por enquanto, os campos não salvam nem alteram serviços. Estamos preparando a tela de cadastro.</p>
+      <button class="primary-btn" value="close">Fechar</button>
+    </form>
+  </dialog>
+  <script src="app.js"></script>
+</body>
+</html>
