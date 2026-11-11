@@ -1,0 +1,12 @@
+{
+  "name": "painel-central-conecta-gospel",
+  "version": "1.0.0",
+  "description": "Painel Central Conecta Gospel - gerenciamento de rádios",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
