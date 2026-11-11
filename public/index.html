@@ -1,192 +1,124 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#10162F">
-  <title>Painel Central | Conecta Gospel</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10162F">
+<title>Painel Central | Conecta Gospel</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#10162F;color:#fff;font-family:Arial,sans-serif}
+header{padding:22px;background:#172344;border-bottom:1px solid #20C7D9}
+header h1{margin:0;color:#20C7D9;font-size:25px}
+header p{margin:7px 0 0;color:#A7B5C8}
+main{max-width:1100px;margin:auto;padding:24px}
+h2{color:#20C7D9}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.card{background:#192747;border:1px solid #304466;border-radius:15px;padding:20px}
+.card h3{margin-top:0}
+.status{color:#A7B5C8;font-size:13px}
+button{background:#20C7D9;color:#10162F;border:0;border-radius:9px;padding:11px 16px;font-weight:bold;cursor:pointer;margin:5px 5px 5px 0}
+input{width:100%;padding:12px;border-radius:8px;border:1px solid #52647f;background:#10162F;color:white;margin:7px 0 14px}
+section{margin-bottom:30px}
+#resultado{color:#A7B5C8}
+footer{text-align:center;padding:25px;color:#A7B5C8}
+</style>
 </head>
 <body>
+<header>
+<h1>Conecta Gospel</h1>
+<p>Painel Central de Rádios</p>
+</header>
 
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <h2>Conecta Gospel</h2>
-      <span>Painel Central</span>
-    </div>
+<main>
+<section>
+<h2>Central de controle</h2>
+<p>Gerencie suas três emissoras em um só lugar.</p>
+<p id="resultado">Verificando servidor...</p>
+</section>
 
-    <nav>
-      <button class="nav-btn active" data-page="overview">Visão geral</button>
-      <button class="nav-btn" data-page="radios">Minhas rádios</button>
-      <button class="nav-btn" data-page="playlists">Playlists</button>
-      <button class="nav-btn" data-page="schedule">Programação</button>
-      <button class="nav-btn" data-page="identity">Identidade</button>
-      <button class="nav-btn" data-page="settings">Configurações</button>
-    </nav>
-  </aside>
+<section>
+<h2>Minhas rádios</h2>
+<div class="grid" id="radios">
+<div class="card">
+<h3>Vem Comigo Deus</h3>
+<p class="status">Aguardando configuração</p>
+<button onclick="abrirRadio('vem')">Configurar rádio</button>
+</div>
+<div class="card">
+<h3>Radio Pop Gospel</h3>
+<p class="status">Aguardando configuração</p>
+<button onclick="abrirRadio('pop')">Configurar rádio</button>
+</div>
+<div class="card">
+<h3>Rádio És-me Aqui</h3>
+<p class="status">Servidor cadastrado</p>
+<button onclick="abrirRadio('esme')">Configurar rádio</button>
+</div>
+</div>
+</section>
 
-  <main class="main-content">
+<section class="card" id="configuracao" hidden>
+<h2 id="radioNome">Configurar rádio</h2>
+<label>Endereço do site</label>
+<input id="siteUrl" placeholder="https://seusite.com">
+<label>Endereço do áudio (stream)</label>
+<input id="streamUrl" placeholder="https://servidor.com/stream">
+<button onclick="salvarRadio()">Salvar configuração</button>
+<button onclick="fecharRadio()">Fechar</button>
+</section>
 
-    <header class="topbar">
-      <div>
-        <h1>Painel Central</h1>
-        <p>Gerencie suas emissoras em um só lugar.</p>
-      </div>
-      <span class="tag">CENTRAL DE RÁDIOS</span>
-    </header>
+<section class="card">
+<h2>Estado do painel</h2>
+<p>Servidor central: <strong id="estado">Verificando...</strong></p>
+<button onclick="verificarServidor()">Atualizar status</button>
+</section>
+</main>
 
-    <!-- VISÃO GERAL -->
-    <section class="page active" id="overview">
-      <h2>Bem-vindo à Conecta Gospel</h2>
-      <p>Suas três emissoras reunidas em um único painel.</p>
+<footer>Conecta Gospel Rádio © 2026</footer>
 
-      <h2>Rádios cadastradas</h2>
+<script>
+let radioAtual = "";
+const nomes = {
+  vem: "Vem Comigo Deus",
+  pop: "Radio Pop Gospel",
+  esme: "Rádio És-me Aqui"
+};
 
-      <div class="radio-grid">
+async function verificarServidor(){
+  const estado = document.getElementById("estado");
+  const resultado = document.getElementById("resultado");
+  try{
+    const resposta = await fetch("/api/health");
+    if(!resposta.ok) throw new Error("Servidor indisponível");
+    const dados = await resposta.json();
+    estado.textContent = "ONLINE";
+    resultado.textContent = "Painel conectado ao servidor central.";
+  }catch(erro){
+    estado.textContent = "OFFLINE";
+    resultado.textContent = "Não foi possível conectar ao servidor.";
+  }
+}
 
-        <article class="radio-card">
-          <div class="card-top">
-            <div class="radio-icon">VC</div>
-            <span class="tag pending">Cadastrada</span>
-          </div>
-          <h3>Vem Comigo Deus</h3>
-          <p>Uma rádio de louvores, orações e pregações.</p>
-          <div class="card-meta">
-            <span>Emissora 01</span>
-            <span>Web Rádio</span>
-          </div>
-          <button class="card-btn" data-radio="vem">Configurar rádio →</button>
-        </article>
+function abrirRadio(id){
+  radioAtual = id;
+  document.getElementById("radioNome").textContent = nomes[id];
+  document.getElementById("siteUrl").value = "";
+  document.getElementById("streamUrl").value =
+    id === "esme" ? "https://servidor-es-me-aqui.onrender.com/stream" : "";
+  document.getElementById("configuracao").hidden = false;
+  document.getElementById("configuracao").scrollIntoView({behavior:"smooth"});
+}
 
-        <article class="radio-card">
-          <div class="card-top">
-            <div class="radio-icon turquoise">PG</div>
-            <span class="tag pending">Cadastrada</span>
-          </div>
-          <h3>Radio Pop Gospel</h3>
-          <p>Música gospel, notícias e entretenimento jovem.</p>
-          <div class="card-meta">
-            <span>Emissora 02</span>
-            <span>Web Rádio</span>
-          </div>
-          <button class="card-btn" data-radio="pop">Configurar rádio →</button>
-        </article>
+function fecharRadio(){
+  document.getElementById("configuracao").hidden = true;
+}
 
-        <article class="radio-card">
-          <div class="card-top">
-            <div class="radio-icon turquoise">EA</div>
-            <span class="tag pending">Cadastrada</span>
-          </div>
-          <h3>Rádio És-me Aqui</h3>
-          <p>Uma nova emissora para levar a Palavra de Deus.</p>
-          <div class="card-meta">
-            <span>Emissora 03</span>
-            <span>Web Rádio</span>
-          </div>
-          <button class="card-btn" data-radio="esme">Configurar rádio →</button>
-        </article>
+async function salvarRadio(){
+  alert("A configuração visual foi preenchida. O salvamento permanente será implementado na próxima etapa.");
+}
 
-      </div>
-    </section>
-
-    <!-- MINHAS RÁDIOS -->
-    <section class="page" id="radios">
-      <h2>Minhas rádios</h2>
-      <p>Gerencie individualmente cada emissora.</p>
-
-      <div class="radio-grid">
-
-        <article class="radio-card">
-          <div class="radio-icon">VC</div>
-          <h3>Vem Comigo Deus</h3>
-          <p>Louvores, orações e pregações.</p>
-          <button class="card-btn" data-radio="vem">Abrir configuração →</button>
-        </article>
-
-        <article class="radio-card">
-          <div class="radio-icon turquoise">PG</div>
-          <h3>Radio Pop Gospel</h3>
-          <p>Música gospel e programação jovem.</p>
-          <button class="card-btn" data-radio="pop">Abrir configuração →</button>
-        </article>
-
-        <article class="radio-card">
-          <div class="radio-icon turquoise">EA</div>
-          <h3>Rádio És-me Aqui</h3>
-          <p>Louvores e mensagens de fé.</p>
-          <button class="card-btn" data-radio="esme">Abrir configuração →</button>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- PLAYLISTS -->
-    <section class="page" id="playlists">
-      <h2>Playlists e músicas</h2>
-      <p>Organize as músicas de cada emissora.</p>
-
-      <label for="radioSelect">Selecione a rádio</label>
-      <select id="radioSelect">
-        <option value="vem">Vem Comigo Deus</option>
-        <option value="pop">Radio Pop Gospel</option>
-        <option value="esme">Rádio És-me Aqui</option>
-      </select>
-
-      <div class="content-panel">
-        <h3>Biblioteca musical</h3>
-        <p>As playlists serão organizadas separadamente para cada rádio.</p>
-      </div>
-    </section>
-
-    <!-- PROGRAMAÇÃO -->
-    <section class="page" id="schedule">
-      <h2>Programação</h2>
-      <p>Área de organização dos horários e programas das emissoras.</p>
-
-      <label for="scheduleRadio">Selecione a rádio</label>
-      <select id="scheduleRadio">
-        <option value="vem">Vem Comigo Deus</option>
-        <option value="pop">Radio Pop Gospel</option>
-        <option value="esme">Rádio És-me Aqui</option>
-      </select>
-
-      <div class="content-panel">
-        <h3>Grade de programação</h3>
-        <p>Os horários serão configurados individualmente.</p>
-      </div>
-    </section>
-
-    <!-- IDENTIDADE -->
-    <section class="page" id="identity">
-      <h2>Identidade das emissoras</h2>
-      <p>Área para logos, nomes e identidade visual de cada rádio.</p>
-    </section>
-
-    <!-- CONFIGURAÇÕES -->
-    <section class="page" id="settings">
-      <h2>Configurações gerais</h2>
-      <p>Central de gerenciamento Conecta Gospel.</p>
-    </section>
-
-  </main>
-
-  <!-- CONFIGURAÇÃO DA RÁDIO -->
-  <dialog id="configDialog">
-    <div class="dialog-content">
-      <h2 id="dialogTitle">Configurar rádio</h2>
-
-      <label for="siteUrl">Endereço do site</label>
-      <input type="url" id="siteUrl" placeholder="https://seusite.com">
-
-      <label for="streamUrl">Endereço do áudio (stream)</label>
-      <input type="url" id="streamUrl" placeholder="https://servidor.com/stream">
-
-      <div class="dialog-actions">
-        <button type="button" id="closeDialog">Fechar</button>
-      </div>
-    </div>
-  </dialog>
-
-  <script src="app.js"></script>
+verificarServidor();
+</script>
 </body>
 </html>
