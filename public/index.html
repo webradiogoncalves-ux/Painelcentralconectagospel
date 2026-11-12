@@ -115,8 +115,29 @@ function fecharRadio(){
 }
 
 async function salvarRadio(){
-  alert("A configuração visual foi preenchida. O salvamento permanente será implementado na próxima etapa.");
+  const siteUrl = document.getElementById("siteUrl").value.trim();
+  const streamUrl = document.getElementById("streamUrl").value.trim();
+
+  try {
+    const resposta = await fetch("/api/radios/" + radioAtual, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ siteUrl, streamUrl })
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) throw new Error(dados.error);
+
+    alert("Configuração recebida pelo servidor com sucesso!");
+    fecharRadio();
+  } catch (erro) {
+    alert("Erro ao salvar: " + erro.message);
+  }
 }
+
 
 verificarServidor();
 </script>
