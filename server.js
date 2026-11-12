@@ -1,3 +1,4 @@
+
 const express = require("express");
 const path = require("path");
 
@@ -6,7 +7,10 @@ const PORT = process.env.PORT || 3000;
 
 app.disable("x-powered-by");
 app.use(express.json());
-app.use(express.static(__dirname));
+
+const PUBLIC_DIR = path.join(__dirname, "public");
+
+app.use(express.static(PUBLIC_DIR));
 
 const radios = {
   vem: {
@@ -50,10 +54,8 @@ app.post("/api/radios/:id", (req, res) => {
     });
   }
 
-  const { siteUrl, streamUrl } = req.body;
-
-  radio.siteUrl = siteUrl || "";
-  radio.streamUrl = streamUrl || "";
+  radio.siteUrl = req.body.siteUrl || "";
+  radio.streamUrl = req.body.streamUrl || "";
 
   res.json({
     ok: true,
@@ -63,7 +65,7 @@ app.post("/api/radios/:id", (req, res) => {
 });
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(PUBLIC_DIR, "index.html"));
 });
 
 app.listen(PORT, () => {
