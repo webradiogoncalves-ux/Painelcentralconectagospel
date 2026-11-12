@@ -1,4 +1,3 @@
-
 const express = require("express");
 const path = require("path");
 
@@ -33,10 +32,27 @@ const radios = {
   }
 };
 
+function limparUrl(valor) {
+  if (typeof valor !== "string") return "";
+
+  let url = valor.trim();
+
+  const markdown = url.match(
+    /^\[[^\]]*\]\((https?:\/\/[^)]+)\)$/
+  );
+
+  if (markdown) {
+    url = markdown[1];
+  }
+
+  return url;
+}
+
 app.get("/api/health", (req, res) => {
   res.json({
     status: "online",
-    servidor: "Painel Central Conecta Gospel"
+    servidor: "Painel Central Conecta Gospel",
+    radios: Object.keys(radios).length
   });
 });
 
@@ -54,12 +70,12 @@ app.post("/api/radios/:id", (req, res) => {
     });
   }
 
-  radio.siteUrl = req.body.siteUrl || "";
-  radio.streamUrl = req.body.streamUrl || "";
+  radio.siteUrl = limparUrl(req.body.siteUrl);
+  radio.streamUrl = limparUrl(req.body.streamUrl);
 
   res.json({
     ok: true,
-    message: "Configuração recebida",
+    message: "Configuração recebida e corrigida",
     radio
   });
 });
@@ -69,5 +85,7 @@ app.get("*", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("Painel Conecta Gospel online na porta " + PORT);
+  console.log(
+    "Painel Conecta Gospel online na porta " + PORT
+  );
 });
